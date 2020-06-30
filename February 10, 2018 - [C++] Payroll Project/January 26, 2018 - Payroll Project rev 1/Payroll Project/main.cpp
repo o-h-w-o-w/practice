@@ -1,0 +1,104 @@
+/*
+* -----------------
+* Julian Mayugba
+* Professor A
+* January 26, 2018
+* Payroll Project
+* -----------------
+* /This program will create a payroll report./
+*/
+
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    // Variable Declaration
+    int noEmp = 0;
+    float totalGross = 0, averageGross = 0;
+    const float stateTax = 0.06, fedTax = 0.12, unionFees = 0.02;
+    const string divider = "=====================================================================================================";
+    // Introduction
+    cout << divider << endl;
+    cout << "Welcome to the Payroll Program." << endl;
+
+    // [Input] Number of Employees
+    cout << "\nEnter Number of Employees: " << endl;
+    cin >> noEmp;
+
+    // typedef Names String Array
+    typedef string Names[noEmp];
+
+    // Array Declaration
+    Names firstName, middleInitial, lastName;
+    float hoursWorked[noEmp], hourRate[noEmp], overtime[noEmp], empGross[noEmp], netGross[noEmp], tax[noEmp][3];
+
+    // Input/Calculations For Loop
+    for(int i=0;i<noEmp;i++){
+        // [Input] First Name
+        cout << "Enter First Name: " << endl;
+        cin >> firstName[i];
+
+        // [Input] Middle Initial
+        cout << "Enter Middle Initial: " << endl;
+        cin >> middleInitial[i];
+
+        // [Input] Last Name
+        cout << "Enter Last Name: " << endl;
+        cin >> lastName[i];
+
+        // [Input] Hours Worked
+        cout << "Enter Hours Worked: " << endl;
+        cin >> hoursWorked[i];
+
+        // [Input] Rate Per Hour
+        cout << "Enter Rate Per Hour: " << endl;
+        cin >> hourRate[i];
+
+        // [Calculate] Overtime
+        if(hoursWorked[i] > 40){
+            overtime[i] = (hoursWorked[i] - 40) * hourRate[i] * 1.5;
+        }else{
+            overtime[i] = 0;
+        }
+        // [Calculate] Gross Income
+        empGross[i] = (hourRate[i] * hoursWorked[i]) + overtime[i];
+
+        // [Calculate] State Tax index 0
+        tax[i][0] = empGross[i] * stateTax;
+
+        // [Calculate] Fed Tax index 1
+        tax[i][1] = empGross[i] * fedTax;
+
+        // [Calculate] Union Fees index 2
+        tax[i][2] = empGross[i] * unionFees;
+
+        // [Calculate] Tax Sum
+        tax[i][3] = tax[i][0] + tax[i][1] + tax[i][2];
+
+        // [Calculate] Net Gross
+        netGross[i] = empGross[i] - tax[i][3];
+
+        // [Calculate] Total Gross
+        totalGross += empGross[i];
+
+        // [Calculate] Average Gross
+        averageGross = totalGross / noEmp;
+    }
+    // [Display]
+    cout << divider << endl;
+    cout << "First Name\tMI\tLast Name\tRate Per Hour\tHours Worked\tOvertime\tGross\tTax" << endl;
+    cout << divider << endl;
+    // Information For Loop
+    for(int i=0;i<noEmp;i++){
+        cout << firstName[i] << "\t\t" << middleInitial[i] << "\t\t" << lastName[i] << "\t\t" << hourRate[i]
+        << "\t\t" << hoursWorked[i] << "\t" << overtime[i] << "\t\t" << empGross[i] << "\t" << tax[i][3] << endl;;
+    }
+    cout << divider << endl;
+    cout << "Total Gross: " << totalGross << endl;
+    cout << "Average Gross: " << averageGross << endl;
+    cout << divider << endl;
+
+    return 0;
+}
